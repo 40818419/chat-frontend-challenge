@@ -3,18 +3,12 @@
 import { useQuery } from '@tanstack/react-query'
 import ChatInput from './ChatInput'
 import ChatHistory from './ChatHistory'
+import { API } from '../service/api'
 
 export default function ChatContainer() {
   const { data, isPending, error } = useQuery({
     queryKey: ['messages'],
-    queryFn: async () => {
-      const response = await fetch('/api/messages')
-
-      if(!response.ok) {
-        throw new Error(response.statusText)
-      }
-      return response.json()
-    },
+    queryFn: API.get,
   })
 
   return (<>
