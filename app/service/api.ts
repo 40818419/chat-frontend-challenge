@@ -1,9 +1,10 @@
 import { CreateMessageBody } from "../types"
 
 export const API = {
-  get: async ({ after, limit }: { after?: string, limit?: number } = {}) => {
+  get: async ({ after, before, limit }: { after?: string, before?: string, limit?: number } = {}) => {
     const params = new URLSearchParams()
     if (after) params.set('after', after)
+    if (before) params.set('before', before)
     if (limit) params.set('limit', String(limit))
     const query = params.toString()
 

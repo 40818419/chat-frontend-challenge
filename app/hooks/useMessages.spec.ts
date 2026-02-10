@@ -46,7 +46,7 @@ describe('useMessages', () => {
       const { result } = renderHook(() => useMessages(), { wrapper: createWrapper() })
 
       expect(result.current.isPending).toBe(true)
-      expect(result.current.data).toBeUndefined()
+      expect(result.current.data).toEqual([])
     })
 
     it('returns fetched messages as data after resolve', async () => {
@@ -141,9 +141,10 @@ describe('useMessages', () => {
       })
     })
 
-    it('invalidates messages query on success (triggers refetch)', async () => {
+    it('appends new message to cache on success', async () => {
+      const newMessage: Message = { _id: '4', message: 'Hi', author: 'Dan', createdAt: '2025-01-01T00:03:00Z' }
       mockedGet.mockResolvedValue(fakeMessages)
-      mockedPost.mockResolvedValueOnce({ _id: '4', message: 'Hi', author: 'Dan', createdAt: '2025-01-01T00:03:00Z' })
+      mockedPost.mockResolvedValueOnce(newMessage)
 
       const { result } = renderHook(() => useMessages(), { wrapper: createWrapper() })
 
@@ -161,10 +162,9 @@ describe('useMessages', () => {
         expect(result.current.sendMessage.isSuccess).toBe(true)
       })
 
-      // After mutation success, invalidation triggers additional get calls
-      await waitFor(() => {
-        expect(mockedGet.mock.calls.length).toBeGreaterThan(callCountBefore)
-      })
+      // New message is appended directly to cache without refetching
+      expect(result.current.data).toContainEqual(newMessage)
+      expect(mockedGet.mock.calls.length).toBe(callCountBefore)
     })
   })
 })

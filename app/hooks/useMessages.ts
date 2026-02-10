@@ -1,5 +1,5 @@
-import { useEffect } from 'react'                                
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query' 
+import { useEffect } from 'react'
+import { useInfiniteQuery, InfiniteData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { API } from '../service/api'
 import { Message } from '../types'
 import { deduplicateMessages } from '../utils/deduplicateMessages'
@@ -10,12 +10,25 @@ const POLLING_INTERVAL = Number(process.env.NEXT_PUBLIC_POLLING_INTERVAL) || 300
 export function useMessages() {
   const queryClient = useQueryClient()
 
-  const { data, isPending, error } = useQuery({
+  const {
+    data: infiniteData,
+    isPending,
+    error,
+    fetchPreviousPage,
+    hasPreviousPage,
+    isFetchingPreviousPage,
+  } = useInfiniteQuery({
     queryKey: [QUERY_KEY],
-    queryFn: () => API.get(),
+    queryFn: ({ pageParam }) =>
+      pageParam ? API.get({ before: pageParam }) : API.get(),
+    initialPageParam: undefined as string | undefined,
+    getPreviousPageParam: (firstPage) =>
+      firstPage.length > 0 ? firstPage[0].createdAt : undefined,
+    getNextPageParam: () => undefined,
   })
 
-  const lastMessageDate = data?.at(-1)?.createdAt
+  const messages = infiniteData?.pages.flat() ?? []
+  const lastMessageDate = messages.at(-1)?.createdAt
 
   const { data: newMessages } = useQuery({
     queryKey: [QUERY_KEY, 'poll'],
@@ -26,17 +39,45 @@ export function useMessages() {
 
   useEffect(() => {
     if (newMessages && newMessages.length > 0) {
-      queryClient.setQueryData([QUERY_KEY], (prev: Message[]) => deduplicateMessages(prev, newMessages))
+      queryClient.setQueryData(
+        [QUERY_KEY],
+        (prev: InfiniteData<Message[]> | undefined) => {
+          if (!prev) return prev
+          const lastPage = prev.pages[prev.pages.length - 1]
+          const deduped = deduplicateMessages(lastPage, newMessages)
+          return {
+            ...prev,
+            pages: [...prev.pages.slice(0, -1), deduped],
+          }
+        }
+      )
     }
   }, [newMessages, queryClient])
 
-
   const sendMessage = useMutation({
     mutationFn: API.post,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY] })
-    }
+    onSuccess: (newMessage: Message) => {
+      queryClient.setQueryData(
+        [QUERY_KEY],
+        (prev: InfiniteData<Message[]> | undefined) => {
+          if (!prev) return prev
+          const lastPage = prev.pages[prev.pages.length - 1]
+          return {
+            ...prev,
+            pages: [...prev.pages.slice(0, -1), [...lastPage, newMessage]],
+          }
+        }
+      )
+    },
   })
 
-  return { data, isPending, error, sendMessage }
+  return {
+    data: messages,
+    isPending,
+    error,
+    sendMessage,
+    fetchPreviousPage,
+    hasPreviousPage,
+    isFetchingPreviousPage,
+  }
 }

@@ -26,6 +26,9 @@ vi.mock("../../hooks/useMessages", () => ({
       isPaused: false,
       submittedAt: 0,
     },
+    fetchPreviousPage: vi.fn(),
+    hasPreviousPage: false,
+    isFetchingPreviousPage: false,
   })),
 }))
 
