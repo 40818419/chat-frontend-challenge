@@ -4,6 +4,8 @@ import ChatInput from './ChatInput'
 import ChatHistory from './ChatHistory'
 import { useMessages } from '../hooks/useMessages'
 
+export const AUTHOR = 'John Doe'
+
 export default function ChatContainer() {
   const { data, sendMessage, isPending, error } = useMessages()
 

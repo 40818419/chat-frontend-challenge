@@ -5,8 +5,7 @@ import { useRef, useState, SubmitEvent } from "react"
 import Input from "./ui/Input"
 import Button from "./ui/Button"
 import { CreateMessageBody, Message } from "../types"
-
-const AUTHOR = 'John Doe'
+import { AUTHOR } from './ChatContainer'
 
 type ChatInputProps = {
   sendMessage: UseMutationResult<Message, Error, CreateMessageBody>
@@ -51,7 +50,7 @@ export default function ChatInput({ sendMessage }: ChatInputProps) {
       <div className="flex max-w-md w-full py-2">
         <form
           ref={formRef}
-          className="flex flex-row w-full px-6"
+          className="flex flex-row w-full px-2 md:px-6"
           aria-label="Send a message"
           onSubmit={onFormSubmit}
         >

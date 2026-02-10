@@ -1,5 +1,6 @@
 import { Message } from "../types";
 import { Block } from "./ui/Block";
+import { Bubble } from "./ui/Bubble";
 
 type ChatHistoryProps = {
   data: Message[]
@@ -12,7 +13,11 @@ export default function ChatHistory({ data, isPending, error }: ChatHistoryProps
   if (error) return <Block>{String(error)}</Block>
 
   return  (<div className="flex w-full flex-col-reverse flex-1 max-w-md overflow-y-auto px-6">
-      <ul>{data?.map(t => <li key={t._id}>{t.message}</li>)}</ul>
+      <ul className="space-y-4 py-4">
+        {data?.map(item => <li key={item._id}>
+          <Bubble item={item}  />
+        </li>)}
+      </ul>
     </div>
   )
 }
