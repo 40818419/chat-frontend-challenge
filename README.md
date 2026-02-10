@@ -1,6 +1,11 @@
 # Doodle Frontend Challenge
 
-A real-time chat UI built with Next.js, React Query, and Tailwind CSS. The application provides a messaging interface with automatic polling for new messages, deduplication, and a clean component architecture.
+>**Important:** The backend API had a sorting bug where messages were returned in the wrong order
+ when no query parameters were provided. This has been fixed in [PR
+ #7](https://github.com/DoodleScheduling/frontend-challenge-chat-api/pull/7) — make sure you're running
+  an updated version of the backend.
+
+A real-time chat UI built with Next.js, React Query, and Tailwind CSS. The application provides a messaging interface with automatic polling for new messages and deduplication.
 
 
 https://github.com/user-attachments/assets/19295250-6c02-4e81-9fe5-bdeffe720cc5
