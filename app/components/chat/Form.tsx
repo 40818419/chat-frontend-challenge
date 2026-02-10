@@ -2,16 +2,16 @@
 
 import { UseMutationResult } from "@tanstack/react-query"
 import { useRef, useState, SubmitEvent } from "react"
-import Input from "./ui/Input"
-import Button from "./ui/Button"
-import { CreateMessageBody, Message } from "../types"
-import { AUTHOR } from './ChatContainer'
+import Input from "../ui/Input"
+import Button from "../ui/Button"
+import { CreateMessageBody, Message } from "../../types"
+import { AUTHOR } from './Container'
 
-type ChatInputProps = {
+type FormProps = {
   sendMessage: UseMutationResult<Message, Error, CreateMessageBody>
 }
 
-export default function ChatInput({ sendMessage }: ChatInputProps) {
+export default function Form({ sendMessage }: FormProps) {
   const formRef = useRef<HTMLFormElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [statusMessage, setStatusMessage] = useState('')

@@ -1,12 +1,12 @@
 import clsx from "clsx"
 
-type BubbleProps = {
+type CardProps = {
   align?: "start" | "end"
   variant?: "primary" | "default"
   children: React.ReactNode
 }
 
-export function Bubble({ align = "start", variant = "default", children }: BubbleProps) {
+export function Card({ align = "start", variant = "default", children }: CardProps) {
   return (
     <div className={clsx('flex w-full', align === 'end' ? 'justify-end' : 'justify-start')}>
       <div className={clsx(

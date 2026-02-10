@@ -1,4 +1,4 @@
-import Chat from "./components/ChatContainer";
+import Chat from "./components/chat/Container";
 
 export default function Index() {
   return (
