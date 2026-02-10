@@ -2,6 +2,11 @@
 
 A real-time chat UI built with Next.js, React Query, and Tailwind CSS. The application provides a messaging interface with automatic polling for new messages, deduplication, and a clean component architecture.
 
+
+https://github.com/user-attachments/assets/19295250-6c02-4e81-9fe5-bdeffe720cc5
+
+
+
 ## Tech Stack
 
 | Dependency                   | Version  |
