@@ -35,8 +35,7 @@ export function useMessages() {
     mutationFn: API.post,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY] })
-    },
-    onError: (e) => console.log(e)
+    }
   })
 
   return { data, isPending, error, sendMessage }

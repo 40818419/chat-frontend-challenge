@@ -2,7 +2,7 @@ import { describe, it, expect, afterEach } from "vitest"
 import { render, screen, cleanup } from "@testing-library/react"
 import { format } from "date-fns"
 import { Bubble } from "./Bubble"
-import { AUTHOR } from "./Container"
+import { AUTHOR } from "../../utils/author"
 import { Message } from "@/app/types"
 
 afterEach(cleanup)
