@@ -5,6 +5,7 @@ import { Message } from '../types'
 import { deduplicateMessages } from '../utils/deduplicateMessages'
 
 const QUERY_KEY = 'messages'
+const POLLING_INTERVAL = Number(process.env.NEXT_PUBLIC_POLLING_INTERVAL) || 3000
 
 export function useMessages() {
   const queryClient = useQueryClient()
@@ -20,7 +21,7 @@ export function useMessages() {
     queryKey: [QUERY_KEY, 'poll'],
     queryFn: () => API.get({ after: lastMessageDate, limit: 10 }),
     enabled: !!lastMessageDate,
-    refetchInterval: 3000,
+    refetchInterval: POLLING_INTERVAL,
   })
 
   useEffect(() => {
