@@ -50,7 +50,7 @@ app/
       Card.tsx                     # Card wrapper component
       Block.tsx                    # Layout block component
   hooks/
-    useMessages.ts                 # Fetch, poll, deduplicate, and send messages
+    useMessages.ts                 # Infinite query, poll, deduplicate, and send messages
   service/
     api.ts                         # Client-side API layer (GET/POST)
   utils/
@@ -76,15 +76,15 @@ Supported query parameters for `GET`: `limit`, `after`, `before`.
 
 `app/hooks/useMessages.ts` is the central data layer. It uses React Query to:
 
-1. **Fetch** the initial message list via `useQuery`.
-2. **Poll** for new messages every 3 seconds using a second query keyed with `['messages', 'poll']`, fetching only messages created after the last known timestamp.
-3. **Deduplicate** incoming poll results against existing messages before merging them into the cache.
-4. **Send** new messages via `useMutation`, invalidating the message cache on success.
+1. **Fetch** the message list via `useInfiniteQuery` with cursor-based backward pagination. `getPreviousPageParam` uses the first message's `createdAt` as the `before` cursor; `getNextPageParam` returns `undefined` (forward pagination is handled by polling instead).
+2. **Poll** for new messages every 3 seconds using a separate `useQuery` keyed with `['messages', 'poll']`, fetching only messages created after the last known timestamp.
+3. **Deduplicate** incoming poll results against the last page of the infinite cache before merging them in.
+4. **Send** new messages via `useMutation`, optimistically appending the new message to the last page of the `InfiniteData` cache.
 
 ### Chat Components
 
 - **Container** -- orchestrates the chat UI by composing History and Form, passing data and handlers from `useMessages`.
-- **History** -- renders a scrollable list of Bubble components.
+- **History** -- renders a scrollable list of Bubble components. An Intersection Observer on a sentinel element triggers `fetchPreviousPage()` for infinite scroll, and a scroll anchor mechanism preserves scroll position when older messages load.
 - **Bubble** -- displays a single message with author, content, and formatted timestamp.
 - **Form** -- handles message input with validation and status feedback for pending/error states.
 
