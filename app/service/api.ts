@@ -1,8 +1,13 @@
 import { CreateMessageBody } from "../types"
 
 export const API = {
-  get: async () => {
-    const response = await fetch('/api/messages')
+  get: async ({ after, limit }: { after?: string, limit?: number } = {}) => {
+    const params = new URLSearchParams()
+    if (after) params.set('after', after)
+    if (limit) params.set('limit', String(limit))
+    const query = params.toString()
+
+    const response = await fetch(`/api/messages${query ? `?${query}` : ''}`)
 
     if(!response.ok) {
       throw new Error(response.statusText)

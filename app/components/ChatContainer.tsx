@@ -1,19 +1,15 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
 import ChatInput from './ChatInput'
 import ChatHistory from './ChatHistory'
-import { API } from '../service/api'
+import { useMessages } from '../hooks/useMessages'
 
 export default function ChatContainer() {
-  const { data, isPending, error } = useQuery({
-    queryKey: ['messages'],
-    queryFn: API.get,
-  })
+  const { data, sendMessage, isPending, error } = useMessages()
 
   return (<>
       <ChatHistory data={data} isPending={isPending} error={error} />
-      <ChatInput />
+      <ChatInput sendMessage={sendMessage} />
     </>
   )
 }

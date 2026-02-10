@@ -1,34 +1,31 @@
 'use client'
 
-import { useMutation } from "@tanstack/react-query"
-import { queryClient } from "../providers"
+import { UseMutationResult } from "@tanstack/react-query"
 import { useRef, SubmitEvent } from "react"
-import { API } from "../service/api"
 import Input from "./ui/Input"
 import Button from "./ui/Button"
+import { CreateMessageBody, Message } from "../types"
 
 const AUTHOR = 'John Doe'
 
-export default function ChatInput() {
+type ChatInputProps = {
+  sendMessage: UseMutationResult<Message, Error, CreateMessageBody>
+}
+
+export default function ChatInput({ sendMessage }: ChatInputProps) {
   const formRef = useRef<HTMLFormElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-
-  const mutation = useMutation({
-    mutationFn: API.post,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['messages'] })
-      formRef.current?.reset()
-    },
-  })
 
   const onFormSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!inputRef.current) return
     if(inputRef.current.value.trim() === '') return
 
-    mutation.mutate({
+    sendMessage.mutate({
       message: inputRef.current.value,
       author: AUTHOR,
+    }, {
+      onSuccess: () => formRef.current?.reset(),
     })
   }
 
