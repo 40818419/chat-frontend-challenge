@@ -5,7 +5,7 @@ import { useRef, useState, SubmitEvent } from "react"
 import Input from "../ui/Input"
 import Button from "../ui/Button"
 import { CreateMessageBody, Message } from "../../types"
-import { AUTHOR } from './Container'
+import { AUTHOR } from '../../utils/author'
 
 type FormProps = {
   sendMessage: UseMutationResult<Message, Error, CreateMessageBody>

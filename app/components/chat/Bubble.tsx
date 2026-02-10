@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import { format } from "date-fns"
-import { AUTHOR } from "./Container"
+import { AUTHOR } from '../../utils/author'
 import { Message } from "@/app/types"
 import { Card } from "../ui/Card"
 
