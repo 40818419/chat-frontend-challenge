@@ -4,6 +4,7 @@ import ChatInput from './ChatInput'
 import ChatHistory from './ChatHistory'
 import { useMessages } from '../hooks/useMessages'
 
+// hardcoded author is defined here, usually we get this from auth service
 export const AUTHOR = 'John Doe'
 
 export default function ChatContainer() {
