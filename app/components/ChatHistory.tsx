@@ -1,4 +1,5 @@
 import { Message } from "../types";
+import { Block } from "./ui/Block";
 
 type ChatHistoryProps = {
   data: Message[]
@@ -7,10 +8,11 @@ type ChatHistoryProps = {
 }
 
 export default function ChatHistory({ data, isPending, error }: ChatHistoryProps) {
-  if (isPending) return <span>Loading...</span>
-  if (error) return <span>{String(error)}</span>
+  if (isPending) return <Block>Loading...</Block>
+  if (error) return <Block>{String(error)}</Block>
 
-  return  (
-    <ul>{data?.map(t => <li key={t._id}>{t.message}</li>)}</ul>
+  return  (<div className="flex w-full flex-col flex-1 max-w-md overflow-y-auto justify-end px-6">
+      <ul>{data?.map(t => <li key={t._id}>{t.message}</li>)}</ul>
+    </div>
   )
 }

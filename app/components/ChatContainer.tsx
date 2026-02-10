@@ -12,9 +12,7 @@ export default function ChatContainer() {
   })
 
   return (<>
-      <div className="flex w-full flex-col flex-1 max-w-md overflow-y-auto">
-        <ChatHistory data={data} isPending={isPending} error={error} />
-      </div>
+      <ChatHistory data={data} isPending={isPending} error={error} />
       <ChatInput />
     </>
   )
