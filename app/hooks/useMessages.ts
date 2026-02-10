@@ -18,8 +18,7 @@ export function useMessages() {
 
   const { data: newMessages } = useQuery({
     queryKey: [QUERY_KEY, 'poll'],
-    queryFn: () => API.get({ after: lastMessageDate, limit: 10
-}),
+    queryFn: () => API.get({ after: lastMessageDate, limit: 10 }),
     enabled: !!lastMessageDate,
     refetchInterval: 3000,
   })
