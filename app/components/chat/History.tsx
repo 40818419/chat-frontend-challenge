@@ -17,7 +17,7 @@ export default function History({ data, isPending, error }: HistoryProps) {
     <div
       role="log"
       aria-label="Chat history"
-      className="flex w-full flex-col items-center flex-1 overflow-y-auto"
+      className="flex w-full flex-col-reverse overflow-y-auto items-center flex-1"
     >
       <ul aria-label="Messages" className="space-y-4 max-w-md py-4 px-6">
         {data?.map(item => (
