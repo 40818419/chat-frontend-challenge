@@ -1,6 +1,7 @@
 # Doodle Frontend Challenge
 
->**Important:** The backend API had a sorting bug where messages were returned in the wrong order
+> [!IMPORTANT]
+> The backend API had a sorting bug where messages were returned in the wrong order
  when no query parameters were provided. This has been fixed in [PR
  #7](https://github.com/DoodleScheduling/frontend-challenge-chat-api/pull/7) — make sure you're running
   an updated version of the backend.
